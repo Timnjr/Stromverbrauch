@@ -21,7 +21,8 @@ mqtt_user = "tim"                        # Falls eingerichtet Nutzername und Pas
 mqtt_password = "Tim"
 mqtt_publish_thema = "esp32/AHT10"      # Das Publish Thema bennenen. Muss übereinstimmen mit MQTT IN in Node-Red!
 client_id = "esp32-s3"
-mqtt_client = None 
+mqtt_client = None
+
 # I2C Schnittstellen Konfiguration (Die Eingänge müssen entsprechend angepasst werden)
 i2c = SoftI2C(scl=Pin(9), sda=Pin(10))
 wlan = network.WLAN(network.STA_IF)
@@ -59,9 +60,6 @@ def verbinde_mqtt():
     global mqtt_client
     if mqtt_client is None:
         mqtt_client = MQTTClient(client_id, mqtt_broker, port=mqtt_port, user=mqtt_user, password=mqtt_password)
-        print("Verbinde mit MQTT Broker...")
-        mqtt_client.connect()
-        print("MQTT verbunden.")
 
     try:
         print("Verbinde mit MQTT Broker...")
@@ -128,9 +126,10 @@ while True:
             print("Daten erfolgreich an MQTT gesendet.")
         else:
             print("Senden der Daten fehlgeschlagen.")
-
+            
+        trenne_wlan()
         time.sleep(60) # Warte 60 Sekunden bis zur nächsten Messung
-
+        
     except Exception as e:
         print(f"Ein unerwarteter Fehler in der Hauptschleife ist aufgetreten: {e}")
         if mqtt_client:
