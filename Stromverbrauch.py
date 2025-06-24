@@ -9,17 +9,23 @@ import network
 import time
 from umqtt.simple import MQTTClient
 import ujson
+from ota import OTAUpdater
+from WIFI_CONFIG import SSID, PASSWORD
+
+firmware_url = "https://raw.githubusercontent.com/Timnjr/Stromverbrauch/"
+ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "Stromverbrauch.py")
+ota_updater.download_and_install_update_if_available()
 
 # WLAN-Konfiguration
 wlan_ssid = "BZTG-IoT"
 wlan_passwort = "WerderBremen24"
 
 # -- MQTT --
-mqtt_broker = "85.215.147.110"     # IP-Adresse des MQTT-Brokers
-mqtt_port = 1883                                # Port des MQTT-Brokers (Standardmäßig 1883)
+mqtt_broker = "85.215.147.110"           # IP-Adresse des MQTT-Brokers
+mqtt_port = 1883                         # Port des MQTT-Brokers (Standardmäßig 1883)
 mqtt_user = "tim"                        # Falls eingerichtet Nutzername und Passwort zum verbinden mit dem MQTT-Broker
 mqtt_password = "Tim"
-mqtt_publish_thema = "esp32/AHT10"      # Das Publish Thema bennenen. Muss übereinstimmen mit MQTT IN in Node-Red!
+mqtt_publish_thema = "esp32/AHT10"       # Das Publish Thema bennenen.
 client_id = "esp32-s3"
 mqtt_client = None 
 # I2C Schnittstellen Konfiguration (Die Eingänge müssen entsprechend angepasst werden)
