@@ -14,7 +14,6 @@ from WIFI_CONFIG import SSID, PASSWORD
 
 firmware_url = "https://raw.githubusercontent.com/Timnjr/Stromverbrauch/"
 ota_updater = OTAUpdater(SSID, PASSWORD, firmware_url, "Stromverbrauch.py")
-ota_updater.download_and_install_update_if_available()
 
 # WLAN-Konfiguration
 wlan_ssid = "BZTG-IoT"
@@ -104,6 +103,8 @@ def sensor_auslesen():
     temperatur = sensor.temperature()
     
 while True:
+    ota_updater.download_and_install_update_if_available()
+    
     try:
         if not wlan.isconnected():
             print("WLAN nicht verbunden. Versuche zu verbinden...")
